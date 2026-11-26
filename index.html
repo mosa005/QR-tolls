@@ -3,134 +3,167 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0E0E10">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="مولّد QR">
-<meta name="theme-color" content="#0f5c4d">
-<title>مولّد QR للروابط</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-512.png">
+<title>مولّد QR</title>
 <style>
   :root{
-    --bg:#f4f6f5; --card:#fff; --ink:#14201d; --muted:#5d6b67; --line:#dbe3e0;
-    --accent:#0f5c4d; --accent-ink:#fff; --warn:#8a5a00; --warn-bg:#fff4d6; --err:#a12626;
-  }
-  @media (prefers-color-scheme: dark){
-    :root{ --bg:#0e1513; --card:#17211e; --ink:#eaf1ee; --muted:#9db0aa; --line:#2b3a36;
-           --accent:#3fb59c; --accent-ink:#06211b; --warn:#f2c76a; --warn-bg:#2f2610; --err:#ff8c8c; }
+    --bg:#0E0E10; --surface:#17171A; --line:#2A2A30; --ink:#F5F1E8; --muted:#9A968B;
+    --gold:#D4B36A; --gold-d:#8E7440; --gold-ink:#17120A;
+    --warn:#f2c76a; --warn-bg:#2a2210; --err:#ff8c8c;
   }
   *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
+  html{-webkit-text-size-adjust:100%;background:var(--bg)}
   body{
-    margin:0; background:var(--bg); color:var(--ink);
-    font-family:-apple-system,"SF Arabic","Geeza Pro","Segoe UI",Tahoma,sans-serif;
-    line-height:1.55;
-    padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
+    margin:0; background:var(--bg); color:var(--ink); min-height:100vh;
+    font-family:-apple-system,"SF Arabic","Geeza Pro","Segoe UI",Tahoma,sans-serif; line-height:1.55;
+    padding:max(26px,env(safe-area-inset-top)) max(22px,env(safe-area-inset-right)) max(28px,env(safe-area-inset-bottom)) max(22px,env(safe-area-inset-left));
   }
-  main{max-width:520px;margin:0 auto}
-  h1{font-size:1.35rem;margin:6px 0 4px}
-  .sub{color:var(--muted);font-size:.92rem;margin:0 0 16px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
-  label.f{display:block;font-weight:600;font-size:.95rem;margin-bottom:8px}
-  .row{display:flex;gap:8px}
+  button{font:inherit;color:inherit}
+  main{max-width:480px;margin:0 auto}
+
+  /* ---- الترويسة ---- */
+  header{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;margin-bottom:22px}
+  .mark{width:48px;height:48px;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;overflow:hidden}
+  .mark img{width:100%;height:100%;object-fit:contain;padding:7px;background:#fff}
+  .mark svg{display:block}
+  h1{margin:0;font-family:"Damascus","Baghdad","Geeza Pro","Amiri",serif;font-size:2rem;font-weight:700;line-height:1.25}
+  .sub{margin:0;font-size:.85rem;color:var(--muted)}
+  .rule{width:64px;height:1px;background:var(--gold)}
+
+  /* ---- الرابط ---- */
+  .field{display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid var(--gold)}
   textarea{
-    width:100%; min-height:96px; resize:vertical; direction:ltr; text-align:left;
-    font:16px/1.4 ui-monospace,Menlo,monospace; color:var(--ink); background:var(--bg);
-    border:1px solid var(--line); border-radius:12px; padding:12px;
+    flex:1;min-width:0;min-height:56px;resize:none;direction:ltr;text-align:left;background:transparent;border:0;outline:0;
+    color:var(--ink);font:16px/1.5 ui-monospace,Menlo,monospace;padding:12px 0;
   }
-  textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
-  button{
-    font:inherit; font-weight:600; border:0; border-radius:12px; padding:12px 16px; cursor:pointer;
-    background:var(--accent); color:var(--accent-ink); min-height:44px;
+  textarea::placeholder{color:#5d5a52}
+  .linkbtn{border:0;background:transparent;color:var(--gold);font-weight:700;font-size:.88rem;min-height:44px;padding:0 4px;cursor:pointer}
+  .field:focus-within{border-bottom-width:2px}
+
+  /* ---- الكود ---- */
+  .stage{display:flex;justify-content:center;margin:24px 0 6px}
+  .frame{padding:7px;border:1px solid var(--gold);border-radius:6px}
+  .frame>div{padding:7px;border:1px solid var(--gold-d);border-radius:3px;background:#fff}
+  .frame img{display:block;width:min(236px,62vw);height:auto;image-rendering:pixelated;-webkit-touch-callout:default}
+  .empty{width:min(264px,70vw);height:min(264px,70vw);display:grid;place-items:center;text-align:center;color:var(--muted);
+    border:1px dashed var(--gold-d);border-radius:6px;padding:20px;font-size:.9rem}
+  .hint{font-size:.82rem;color:var(--muted);text-align:center;margin:10px 4px 0}
+
+  /* ---- الخيارات ---- */
+  .opts{display:flex;flex-direction:column;gap:6px;margin-top:20px}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:48px;flex-wrap:wrap}
+  .row .l{font-size:.84rem;color:var(--muted)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chips button{
+    min-height:36px;padding:0 16px;border-radius:18px;border:1px solid #2F2F36;background:transparent;color:#BDB8AC;font-size:.84rem;cursor:pointer;
   }
-  button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
-  button:disabled{opacity:.45;cursor:default}
-  .seg{display:flex;gap:6px;flex-wrap:wrap}
-  .seg button{flex:1;min-width:64px;background:var(--bg);color:var(--ink);border:1px solid var(--line);padding:10px 8px;font-weight:500}
-  .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
-  .opt{margin-top:14px}
-  .opt small{display:block;color:var(--muted);margin-top:6px;font-size:.82rem}
-  .swatches{display:flex;gap:10px}
-  .sw{width:44px;height:44px;border-radius:50%;border:3px solid transparent;padding:0;min-height:0;outline:1px solid var(--line)}
-  .sw[aria-pressed="true"]{border-color:var(--accent);outline:2px solid var(--card);outline-offset:-5px}
-  .result{text-align:center}
-  .qrbox{
-    background:#fff; border-radius:14px; padding:10px; display:inline-block; max-width:100%;
-    border:1px solid var(--line);
+  .chips button[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--gold-ink);font-weight:700}
+  .swatches{display:flex;gap:14px}
+  .sw{width:26px;height:26px;border-radius:50%;border:0;padding:0;cursor:pointer;position:relative;box-shadow:0 0 0 1px #2A2A30}
+  .sw::after{content:"";position:absolute;inset:-9px}
+  .sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--bg),0 0 0 4px var(--gold)}
+  .ghost{min-height:36px;padding:0 16px;border-radius:18px;border:1px solid var(--gold-d);background:transparent;color:var(--gold);font-size:.84rem;cursor:pointer}
+  small.note{display:block;color:var(--muted);font-size:.78rem;margin:2px 0 0}
+
+  /* ---- الأزرار ---- */
+  .actions{display:flex;gap:10px;margin-top:22px}
+  .primary{
+    flex:1;min-height:54px;border:0;border-radius:12px;background:var(--gold);color:var(--gold-ink);
+    font-weight:800;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
   }
-  .qrbox img{display:block;width:min(300px,76vw);height:auto;image-rendering:pixelated;-webkit-touch-callout:default;user-select:auto}
-  .empty{color:var(--muted);padding:28px 8px}
-  .hint{font-size:.9rem;color:var(--muted);margin:10px 0 0}
-  .msg{font-size:.9rem;border-radius:10px;padding:9px 12px;margin-top:10px;text-align:right}
+  .primary:disabled,.sec:disabled{opacity:.4;cursor:default}
+  .sec{width:54px;min-height:54px;border:1px solid var(--gold);border-radius:12px;background:transparent;color:var(--gold);display:grid;place-items:center;cursor:pointer;padding:0}
+
+  .msg{font-size:.86rem;border-radius:10px;padding:9px 12px;margin-top:10px;text-align:right}
   .msg.warn{background:var(--warn-bg);color:var(--warn)}
   .msg.err{color:var(--err)}
-  .actions{display:flex;gap:8px;margin-top:12px}
-  .actions button{flex:1}
-  .foot{font-size:.85rem;color:var(--muted)}
+  .foot{font-size:.8rem;color:var(--muted);margin-top:24px;border-top:1px solid var(--line);padding-top:12px}
   .foot p{margin:6px 0}
   [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <main>
-  <h1>مولّد QR للروابط</h1>
-  <p class="sub">الصق أي رابط (مثل رابط OneDrive أو SharePoint) واحصل على كود QR جاهز.</p>
-
-  <section class="card">
-    <label class="f" for="url">الرابط</label>
-    <textarea id="url" placeholder="https://..." inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
-    <div class="actions">
-      <button class="ghost" id="clear" type="button">مسح</button>
+  <header>
+    <div class="mark" id="mark">
+      <img id="brandLogo" alt="" hidden>
+      <svg id="brandGlyph" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#D4B36A" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7" rx="1.4"/><rect x="14" y="3" width="7" height="7" rx="1.4"/><rect x="3" y="14" width="7" height="7" rx="1.4"/>
+        <path d="M14 14h3v3h-3zM19 14h2M14 19h2M18 18h3v3h-3z" stroke-width="1.5"/>
+      </svg>
     </div>
-    <div id="msg" class="msg" hidden></div>
+    <h1 id="brandName">رابطك، بأناقة</h1>
+    <p class="sub" id="brandSub">كود QR مصقول، جاهز للطباعة والمشاركة</p>
+    <div class="rule"></div>
+  </header>
 
-    <div class="opt">
-      <label class="f">مستوى التصحيح</label>
-      <div class="seg" id="ecl">
+  <div class="field">
+    <textarea id="url" placeholder="الصق الرابط هنا https://..." inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="الرابط"></textarea>
+    <button class="linkbtn" id="paste" type="button">لصق</button>
+    <button class="linkbtn" id="clear" type="button" style="color:var(--muted)">مسح</button>
+  </div>
+  <div id="msg" class="msg" hidden></div>
+
+  <section class="stage" aria-live="polite">
+    <div id="empty" class="empty">سيظهر الكود هنا بعد لصق الرابط</div>
+    <div id="out" class="frame" hidden><div><img id="img" alt="كود QR للرابط"></div></div>
+  </section>
+  <p class="hint" id="hint" hidden>للحفظ في الصور: اضغط «حفظ الصورة» ثم اختر من القائمة <b>Save Image</b> (أو «حفظ الصورة»)، أو اضغط مطولاً على الكود.</p>
+
+  <div class="opts">
+    <div class="row">
+      <span class="l">اللون</span>
+      <div class="swatches" id="colors">
+        <button type="button" class="sw" data-v="#000000" style="background:#000" aria-label="أسود" aria-pressed="true"></button>
+        <button type="button" class="sw" data-v="#0b3d6b" style="background:#0b3d6b" aria-label="أزرق" aria-pressed="false"></button>
+        <button type="button" class="sw" data-v="#10352e" style="background:#10352e" aria-label="أخضر" aria-pressed="false"></button>
+        <button type="button" class="sw" data-v="#5a1f6b" style="background:#5a1f6b" aria-label="بنفسجي" aria-pressed="false"></button>
+      </div>
+    </div>
+    <div class="row">
+      <span class="l">التصحيح</span>
+      <div class="chips" id="ecl">
         <button type="button" data-v="M" aria-pressed="true">عادي</button>
         <button type="button" data-v="Q" aria-pressed="false">عالي</button>
         <button type="button" data-v="H" aria-pressed="false">أعلى</button>
       </div>
-      <small>"أعلى" يقرأ بشكل أفضل لو الطباعة صغيرة أو الورقة متضررة، لكن الكود يصير أكثر كثافة.</small>
     </div>
-
-    <div class="opt">
-      <label class="f">اللون</label>
-      <div class="swatches" id="colors">
-        <button type="button" class="sw" data-v="#000000" style="background:#000" aria-label="أسود" aria-pressed="true"></button>
-        <button type="button" class="sw" data-v="#0b3d6b" style="background:#0b3d6b" aria-label="أزرق" aria-pressed="false"></button>
-        <button type="button" class="sw" data-v="#0f5c4d" style="background:#0f5c4d" aria-label="أخضر" aria-pressed="false"></button>
-        <button type="button" class="sw" data-v="#5a1f6b" style="background:#5a1f6b" aria-label="بنفسجي" aria-pressed="false"></button>
-      </div>
-      <small>ألوان داكنة فقط لضمان وضوح المسح على خلفية بيضاء.</small>
-    </div>
-
-    <div class="opt">
-      <label class="f">شعار الشركة (اختياري)</label>
-      <div class="actions" style="margin-top:0">
-        <button class="ghost" id="pickLogo" type="button">اختيار صورة الشعار</button>
+    <div class="row">
+      <span class="l">شعار في الوسط</span>
+      <div class="chips">
+        <button class="ghost" id="pickLogo" type="button">اختيار صورة</button>
         <button class="ghost" id="removeLogo" type="button" hidden>إزالة</button>
       </div>
-      <input type="file" id="logoFile" accept="image/*" hidden>
-      <div id="logoOpts" hidden>
-        <div class="seg" id="logoSize" style="margin-top:10px">
-          <button type="button" data-v="0.16" aria-pressed="false">صغير</button>
-          <button type="button" data-v="0.20" aria-pressed="true">متوسط</button>
-          <button type="button" data-v="0.24" aria-pressed="false">كبير</button>
-        </div>
-      </div>
-      <small id="logoNote">يوضع الشعار في وسط الكود على خلفية بيضاء. عند إضافته يُرفع مستوى التصحيح تلقائياً إلى "أعلى". جرّب مسح الكود بجوالك قبل الطباعة.</small>
     </div>
-  </section>
+    <div class="row" id="logoOpts" hidden>
+      <span class="l">حجم الشعار</span>
+      <div class="chips" id="logoSize">
+        <button type="button" data-v="0.16" aria-pressed="false">صغير</button>
+        <button type="button" data-v="0.20" aria-pressed="true">متوسط</button>
+        <button type="button" data-v="0.24" aria-pressed="false">كبير</button>
+      </div>
+    </div>
+    <small class="note">عند إضافة الشعار يُرفع مستوى التصحيح تلقائياً إلى "أعلى". جرّب مسح الكود بجوالك قبل الطباعة.</small>
+    <input type="file" id="logoFile" accept="image/*" hidden>
+  </div>
 
-  <section class="card result" aria-live="polite">
-    <div id="empty" class="empty">سيظهر الكود هنا بعد لصق الرابط.</div>
-    <div id="out" hidden>
-      <div class="qrbox"><img id="img" alt="كود QR للرابط"></div>
-      <p class="hint">للحفظ في الصور: اضغط مطولاً على الكود ثم اختر <b>إضافة إلى الصور</b>.</p>
-      <div class="actions">
-        <button id="copy" type="button">نسخ الصورة</button>
-      </div>
-      <div id="copymsg" class="msg" hidden></div>
-    </div>
-  </section>
+  <div class="actions">
+    <button class="primary" id="save" type="button" disabled>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+      حفظ الصورة
+    </button>
+    <button class="sec" id="copy" type="button" aria-label="نسخ الصورة" disabled>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg>
+    </button>
+  </div>
+  <div id="actmsg" class="msg" hidden></div>
 
   <section class="foot">
     <p>🔒 كل شيء يتم على جهازك، والرابط لا يُرسل لأي جهة.</p>
@@ -1403,6 +1436,11 @@ return {QRCode:req("./index"),ECL:req("./QRErrorCorrectLevel")};})();
 </script>
 <script>
 (function(){
+  /* ===== الهوية: عدّل هذه القيم فقط لتغيير الاسم أو الشعار =====
+     logo: صورة الشعار بصيغة data URL (مثل "data:image/png;base64,...") أو null.
+     إذا وُضع الشعار يظهر في الترويسة وفي وسط الكود تلقائياً. */
+  var BRAND={name:'رابطك، بأناقة',tagline:'كود QR مصقول، جاهز للطباعة والمشاركة',logo:null,logoInQR:true};
+
   var $=function(id){return document.getElementById(id)};
   var urlEl=$('url'), msg=$('msg'), img=$('img'), out=$('out'), empty=$('empty');
   var state={ecl:'M',color:'#000000',logo:null,logoSize:0.20};
@@ -1412,35 +1450,32 @@ return {QRCode:req("./index"),ECL:req("./QRErrorCorrectLevel")};})();
     if(!text){msg.hidden=true;return}
     msg.textContent=text; msg.className='msg '+kind; msg.hidden=false;
   }
-
-  function normalize(raw){
-    return raw.replace(/[‎‏‪-‮\s]+/g,function(m){return ''}); // remove spaces/newlines & hidden bidi marks
+  function actMsg(text,kind){
+    var m=$('actmsg'); if(!text){m.hidden=true;return}
+    m.textContent=text; m.className='msg '+kind; m.hidden=false;
   }
-
+  function normalize(raw){ return raw.replace(/[‎‏‪-‮\s]+/g,''); }
   function build(text,level){
     var q=new QRLib.QRCode(-1,QRLib.ECL[level]);
-    q.addData(unescape(encodeURIComponent(text))); // UTF-8
+    q.addData(unescape(encodeURIComponent(text)));
     q.make();
     return q;
   }
+  function showEmpty(){ out.hidden=true; empty.hidden=false; $('hint').hidden=true; $('save').disabled=true; $('copy').disabled=true; img._canvas=null; }
 
   function render(){
     var raw=urlEl.value.trim();
-    $('copymsg').hidden=true;
-    if(!raw){ out.hidden=true; empty.hidden=false; setMsg(''); return; }
+    actMsg('');
+    if(!raw){ showEmpty(); setMsg(''); return; }
     var text=normalize(raw);
     if(text.length>MAX_LEN){
-      out.hidden=true; empty.hidden=false;
-      setMsg('الرابط طويل جداً لتحويله إلى كود يُقرأ بسهولة. جرّب رابطاً مختصراً.','err'); return;
+      showEmpty(); setMsg('الرابط طويل جداً لتحويله إلى كود يُقرأ بسهولة. جرّب رابطاً مختصراً.','err'); return;
     }
     var q;
     try{ q=build(text,state.ecl); }
-    catch(e){
-      out.hidden=true; empty.hidden=false;
-      setMsg('تعذّر إنشاء الكود لهذا الرابط. جرّب مستوى تصحيح أقل أو رابطاً أقصر.','err'); return;
-    }
+    catch(e){ showEmpty(); setMsg('تعذّر إنشاء الكود لهذا الرابط. جرّب مستوى تصحيح أقل أو رابطاً أقصر.','err'); return; }
     var n=q.getModuleCount(), total=n+QUIET*2;
-    var px=Math.max(4,Math.floor(OUT_PX/total)); // integer pixels per module = crisp edges
+    var px=Math.max(4,Math.floor(OUT_PX/total));
     var size=px*total;
     var c=document.createElement('canvas'); c.width=c.height=size;
     var g=c.getContext('2d');
@@ -1452,7 +1487,7 @@ return {QRCode:req("./index"),ECL:req("./QRErrorCorrectLevel")};})();
     if(state.logo){
       var lw=state.logo.naturalWidth||state.logo.width, lh=state.logo.naturalHeight||state.logo.height;
       if(lw&&lh){
-        var box=Math.round(n*px*state.logoSize);            // max logo side
+        var box=Math.round(n*px*state.logoSize);
         var s=Math.min(box/lw,box/lh);
         var w=Math.round(lw*s), h=Math.round(lh*s);
         var pad=Math.max(3,Math.round(box*0.08));
@@ -1468,7 +1503,7 @@ return {QRCode:req("./index"),ECL:req("./QRErrorCorrectLevel")};})();
     }
     img.src=c.toDataURL('image/png');
     img._canvas=c;
-    empty.hidden=true; out.hidden=false;
+    empty.hidden=true; out.hidden=false; $('hint').hidden=false; $('save').disabled=false; $('copy').disabled=false;
 
     if(state.logo && state.ecl!=='H'){
       setMsg('مع وجود الشعار يُنصح بمستوى التصحيح "أعلى" حتى يسهل مسح الكود.','warn');
@@ -1481,22 +1516,33 @@ return {QRCode:req("./index"),ECL:req("./QRErrorCorrectLevel")};})();
 
   var t; urlEl.addEventListener('input',function(){clearTimeout(t);t=setTimeout(render,120)});
   $('clear').addEventListener('click',function(){urlEl.value='';render();urlEl.focus()});
+  $('paste').addEventListener('click',function(){
+    function fallback(){ urlEl.focus(); setMsg('اضغط مطولاً داخل الحقل ثم اختر «لصق».','warn'); }
+    try{
+      navigator.clipboard.readText().then(function(txt){ if(txt){urlEl.value=txt.trim(); render();} else fallback(); },fallback);
+    }catch(e){ fallback(); }
+  });
 
   function bindGroup(id,key){
     var g=$(id);
     g.addEventListener('click',function(e){
       var b=e.target.closest('button'); if(!b) return;
-      state[key]=b.getAttribute('data-v');
+      var v=b.getAttribute('data-v'); state[key]=(key==='logoSize')?parseFloat(v):v;
       Array.prototype.forEach.call(g.querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
       render();
     });
   }
-  bindGroup('ecl','ecl'); bindGroup('colors','color');
-  bindGroup('logoSize','logoSize');
+  bindGroup('ecl','ecl'); bindGroup('colors','color'); bindGroup('logoSize','logoSize');
 
   function setEcl(v){
     state.ecl=v;
     Array.prototype.forEach.call($('ecl').querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',x.getAttribute('data-v')===v?'true':'false')});
+  }
+  function useLogo(im){
+    state.logo=im; setEcl('H');
+    $('logoOpts').hidden=false; $('removeLogo').hidden=false;
+    $('pickLogo').textContent='تغيير الصورة';
+    render();
   }
   $('pickLogo').addEventListener('click',function(){$('logoFile').click()});
   $('logoFile').addEventListener('change',function(){
@@ -1504,12 +1550,7 @@ return {QRCode:req("./index"),ECL:req("./QRErrorCorrectLevel")};})();
     var rd=new FileReader();
     rd.onload=function(){
       var im=new Image();
-      im.onload=function(){
-        state.logo=im; setEcl('H');
-        $('logoOpts').hidden=false; $('removeLogo').hidden=false;
-        $('pickLogo').textContent='تغيير الشعار';
-        render();
-      };
+      im.onload=function(){useLogo(im)};
       im.onerror=function(){setMsg('تعذّر قراءة الصورة. جرّب PNG أو JPG أو SVG.','err')};
       im.src=rd.result;
     };
@@ -1518,20 +1559,40 @@ return {QRCode:req("./index"),ECL:req("./QRErrorCorrectLevel")};})();
   });
   $('removeLogo').addEventListener('click',function(){
     state.logo=null; $('logoOpts').hidden=true; $('removeLogo').hidden=true;
-    $('pickLogo').textContent='اختيار صورة الشعار'; render();
+    $('pickLogo').textContent='اختيار صورة'; render();
   });
 
-  $('copy').addEventListener('click',function(){
-    var cm=$('copymsg'); cm.hidden=false;
-    function done(ok){cm.className='msg '+(ok?'warn':'err');cm.textContent=ok?'تم نسخ الصورة.':'تعذّر النسخ هنا. اضغط مطولاً على الكود واختر نسخ أو إضافة إلى الصور.'}
-    try{
-      img._canvas.toBlob(function(b){
-        try{
-          navigator.clipboard.write([new ClipboardItem({'image/png':b})]).then(function(){done(true)},function(){done(false)});
-        }catch(e){done(false)}
-      },'image/png');
-    }catch(e){done(false)}
+  // ----- الحفظ والمشاركة والنسخ -----
+  function getBlob(cb){ if(!img._canvas){return} img._canvas.toBlob(cb,'image/png'); }
+  $('save').addEventListener('click',function(){
+    getBlob(function(b){
+      var file; try{ file=new File([b],'qr-code.png',{type:'image/png'}); }catch(e){ file=null; }
+      if(file && navigator.canShare && navigator.canShare({files:[file]})){
+        navigator.share({files:[file]}).catch(function(){}); // يظهر خيار «حفظ الصورة» في الآيفون
+        return;
+      }
+      try{
+        var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='qr-code.png';
+        document.body.appendChild(a); a.click(); a.remove();
+        actMsg('تم تنزيل الصورة. وإن لم تظهر، اضغط مطولاً على الكود واختر حفظ.','warn');
+      }catch(e){ actMsg('اضغط مطولاً على الكود واختر إضافة إلى الصور.','warn'); }
+    });
   });
+  $('copy').addEventListener('click',function(){
+    function done(ok){ actMsg(ok?'تم نسخ الصورة.':'تعذّر النسخ هنا. اضغط مطولاً على الكود واختر نسخ.',ok?'warn':'err'); }
+    getBlob(function(b){
+      try{ navigator.clipboard.write([new ClipboardItem({'image/png':b})]).then(function(){done(true)},function(){done(false)}); }
+      catch(e){ done(false); }
+    });
+  });
+
+  // ----- الهوية -----
+  $('brandName').textContent=BRAND.name; $('brandSub').textContent=BRAND.tagline;
+  if(BRAND.logo){
+    $('brandLogo').src=BRAND.logo; $('brandLogo').hidden=false; $('brandGlyph').style.display='none';
+    if(BRAND.logoInQR){ var bl=new Image(); bl.onload=function(){useLogo(bl)}; bl.src=BRAND.logo; }
+  }
+  showEmpty();
 })();
 </script>
 </body>
